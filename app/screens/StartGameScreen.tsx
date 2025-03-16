@@ -1,7 +1,37 @@
 import PrimaryButton from "@/components/ui/PrimaryButton";
-import { StyleSheet, TextInput, View } from "react-native";
+import { useState } from "react";
+import { Alert, StyleSheet, TextInput, View } from "react-native";
 
-export default function StartGameScreen() {
+interface StartGameScreenProps {
+  onConfirmNumber: (n: number) => void;
+}
+
+export default function StartGameScreen({
+  onConfirmNumber,
+}: StartGameScreenProps) {
+  const [enteredNumber, setEnteredNumber] = useState<string>("");
+
+  const numberInputHandler = (enteredText: string) => {
+    setEnteredNumber(enteredText);
+  };
+
+  const resetInputHandler = () => {
+    setEnteredNumber("");
+  };
+
+  const confirmInputHandler = () => {
+    const chosenNumber = parseInt(enteredNumber);
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert(
+        "Invalid number!",
+        "Number has to be a number between 1 and 99.",
+        [{ text: "Okay", style: "destructive", onPress: resetInputHandler }]
+      );
+      return;
+    }
+    onConfirmNumber(chosenNumber);
+  };
+
   return (
     <View style={styles.inputContainer}>
       <TextInput
@@ -10,13 +40,15 @@ export default function StartGameScreen() {
         keyboardType="number-pad"
         autoCapitalize="none"
         autoCorrect={false}
+        value={enteredNumber}
+        onChangeText={numberInputHandler}
       />
       <View style={styles.btnsContainer}>
         <View style={styles.btnContainer}>
-          <PrimaryButton>Reset</PrimaryButton>
+          <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
         </View>
         <View style={styles.btnContainer}>
-          <PrimaryButton>Confirm</PrimaryButton>
+          <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
         </View>
       </View>
     </View>
@@ -42,7 +74,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     textAlign: "center",
-    fontSize: 32,
+    fontSize: 28,
     borderBottomColor: "#9B4F0F",
     borderBottomWidth: 2,
     color: "#9B4F0F",

@@ -2,10 +2,16 @@ import { View, StyleSheet, Text, Pressable } from "react-native";
 
 interface PrimaryButtonProps {
   children: string;
+  onPress: () => void;
 }
 
-export default function PrimaryButton({ children }: PrimaryButtonProps) {
-  const pressHandler = () => {};
+export default function PrimaryButton({
+  children,
+  onPress,
+}: PrimaryButtonProps) {
+  const pressHandler = () => {
+    onPress();
+  };
   return (
     <View style={styles.btnOuterContainer}>
       <Pressable
