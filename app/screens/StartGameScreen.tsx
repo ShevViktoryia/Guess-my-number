@@ -1,4 +1,5 @@
 import PrimaryButton from "@/components/ui/PrimaryButton";
+import Colors from "@/util/colors";
 import { useState } from "react";
 import { Alert, StyleSheet, TextInput, View } from "react-native";
 
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginTop: 100,
     marginHorizontal: 25,
-    backgroundColor: "#1E434C",
+    backgroundColor: Colors.primaryColor,
     borderRadius: 8,
     elevation: 8,
     shadowColor: "black",
@@ -75,9 +76,9 @@ const styles = StyleSheet.create({
     width: 50,
     textAlign: "center",
     fontSize: 28,
-    borderBottomColor: "#9B4F0F",
+    borderBottomColor: Colors.pinkColor,
     borderBottomWidth: 2,
-    color: "#9B4F0F",
+    color: Colors.pinkColor,
     marginVertical: 10,
     fontWeight: "bold",
   },

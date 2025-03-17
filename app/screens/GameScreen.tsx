@@ -1,17 +1,65 @@
-import { Text, View, StyleSheet } from "react-native";
+import NumberContainer from "@/components/game/NumberContainer";
+import PrimaryButton from "@/components/ui/PrimaryButton";
+import Title from "@/components/ui/Title";
+import { useState } from "react";
+import { Text, View, StyleSheet, Alert } from "react-native";
 
-type Props = {};
+interface GameScreenProps {
+  userNumber: number;
+}
 
-export default function GameScreen({}: Props) {
+function generateRandomBetween(min: number, max: number, exclude: number) {
+  const rndNum = Math.floor(Math.random() * (max - min)) + min;
+
+  if (rndNum === exclude) {
+    return generateRandomBetween(min, max, exclude);
+  } else {
+    return rndNum;
+  }
+}
+
+let minNumber = 1;
+let maxNumber = 100;
+
+export default function GameScreen({ userNumber }: GameScreenProps) {
+  const initialGuess = generateRandomBetween(minNumber, maxNumber, userNumber);
+  const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+  const nextGuessHandler = (direction: string) => {
+    if (
+      (direction === "lower" && currentGuess < userNumber) ||
+      (direction === "greater" && currentGuess > userNumber)
+    ) {
+      Alert.alert("Don't lie!", "You know that this is wrong!", [
+        { text: "Sorry!", style: "cancel" },
+      ]);
+      return;
+    }
+    if (direction === "lower") {
+      maxNumber = currentGuess;
+    } else {
+      minNumber = currentGuess + 1;
+    }
+    const newNumber = generateRandomBetween(minNumber, maxNumber, currentGuess);
+    setCurrentGuess(newNumber);
+  };
+
   return (
     <View style={styles.screen}>
-      <Text>Opponent's Guess</Text>
-      {/* GUESS */}
+      <Title>Opponent's Guess</Title>
+      <NumberContainer>{currentGuess}</NumberContainer>
       <View>
         <Text>Higher or lower?</Text>
-        {/* + - */}
+        <View>
+          <PrimaryButton onPress={() => nextGuessHandler("greater")}>
+            +
+          </PrimaryButton>
+          <PrimaryButton onPress={() => nextGuessHandler("lower")}>
+            -
+          </PrimaryButton>
+        </View>
       </View>
-      <View>Log Rounds</View>
+      <Text>Log Rounds</Text>
     </View>
   );
 }
@@ -19,6 +67,6 @@ export default function GameScreen({}: Props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 12,
+    padding: 24,
   },
 });
