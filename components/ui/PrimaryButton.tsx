@@ -1,8 +1,9 @@
 import Colors from "@/util/colors";
+import { ReactElement } from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
 
 interface PrimaryButtonProps {
-  children: string;
+  children: string | ReactElement;
   onPress: () => void;
 }
 
