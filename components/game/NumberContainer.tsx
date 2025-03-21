@@ -27,5 +27,6 @@ const styles = StyleSheet.create({
     color: Colors.primaryColor,
     fontSize: 36,
     fontWeight: "bold",
+    fontFamily: "space-mono",
   },
 });

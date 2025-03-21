@@ -17,5 +17,6 @@ const styles = StyleSheet.create({
   instructionText: {
     color: Colors.blueColor,
     fontSize: 25,
+    fontFamily: "space-mono",
   },
 });

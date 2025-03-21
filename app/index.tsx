@@ -4,10 +4,17 @@ import { useState } from "react";
 import GameScreen from "./screens/GameScreen";
 import Colors from "@/util/colors";
 import GameOverScreen from "./screens/GameOverScreen";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState<number | null>();
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [fontsLoaded] = useFonts({
+    "space-mono": require("../assets/fonts/SpaceMono-Regular.ttf"),
+  });
+
+  if (!fontsLoaded) return <AppLoading />;
 
   const pickedNumberHandler = (pickedNumber: number) => {
     setUserNumber(pickedNumber);

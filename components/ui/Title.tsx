@@ -11,6 +11,7 @@ export default function Title({ children }: TitleProps) {
 
 const styles = StyleSheet.create({
   title: {
+    fontFamily: "space-mono",
     fontSize: 24,
     fontWeight: "bold",
     color: Colors.pinkColor,
