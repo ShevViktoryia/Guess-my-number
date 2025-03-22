@@ -4,12 +4,13 @@ import InstructionText from "@/components/ui/InstructionText";
 import PrimaryButton from "@/components/ui/PrimaryButton";
 import Title from "@/components/ui/Title";
 import { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Alert } from "react-native";
+import { Text, View, StyleSheet, Alert, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import GuessLogItem from "@/components/game/GuessLogItem";
 
 interface GameScreenProps {
   userNumber: number;
-  onGameOver: () => void;
+  onGameOver: (n: number) => void;
 }
 
 function generateRandomBetween(min: number, max: number, exclude: number) {
@@ -31,12 +32,18 @@ export default function GameScreen({
 }: GameScreenProps) {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      onGameOver();
+      onGameOver(guessRounds.length);
     }
   }, [currentGuess, userNumber, onGameOver]);
+
+  useEffect(() => {
+    minNumber = 1;
+    maxNumber = 100;
+  }, []);
 
   const nextGuessHandler = (direction: string) => {
     if (
@@ -55,7 +62,10 @@ export default function GameScreen({
     }
     const newNumber = generateRandomBetween(minNumber, maxNumber, currentGuess);
     setCurrentGuess(newNumber);
+    setGuessRounds((prev) => [...prev, newNumber]);
   };
+
+  const guessRoundsListLength = guessRounds.length;
 
   return (
     <View style={styles.screen}>
@@ -78,7 +88,18 @@ export default function GameScreen({
           </View>
         </View>
       </Card>
-      <Text>Log Rounds</Text>
+      <View style={styles.listContainer}>
+        <FlatList
+          data={guessRounds}
+          keyExtractor={(item) => item + ""}
+          renderItem={(itemData) => (
+            <GuessLogItem
+              roundNumber={guessRoundsListLength - itemData.index}
+              guess={itemData.item}
+            />
+          )}
+        />
+      </View>
     </View>
   );
 }
@@ -96,5 +117,9 @@ const styles = StyleSheet.create({
   },
   instructionText: {
     marginBottom: 12,
+  },
+  listContainer: {
+    flex: 1,
+    padding: 15,
   },
 });

@@ -13,6 +13,7 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     "space-mono": require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
+  const [guessRounds, setGuessRounds] = useState<number>(0);
 
   if (!fontsLoaded) return <AppLoading />;
 
@@ -21,8 +22,14 @@ export default function App() {
     setGameIsOver(false);
   };
 
-  const gameOverHandler = () => {
+  const gameOverHandler = (numberOfRounds: number) => {
     setGameIsOver(true);
+    setGuessRounds(numberOfRounds);
+  };
+
+  const startNewGameHandler = () => {
+    setUserNumber(null);
+    setGuessRounds(0);
   };
 
   let screen = <StartGameScreen onConfirmNumber={pickedNumberHandler} />;
@@ -30,7 +37,14 @@ export default function App() {
     screen = (
       <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} />
     );
-  if (gameIsOver && userNumber) screen = <GameOverScreen />;
+  if (gameIsOver && userNumber)
+    screen = (
+      <GameOverScreen
+        userNumber={userNumber}
+        roundsNumber={guessRounds}
+        onStartNewGame={startNewGameHandler}
+      />
+    );
 
   return <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>;
 }
