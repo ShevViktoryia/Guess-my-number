@@ -6,6 +6,7 @@ import Colors from "@/util/colors";
 import GameOverScreen from "./screens/GameOverScreen";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState<number | null>();
@@ -46,7 +47,12 @@ export default function App() {
       />
     );
 
-  return <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>;
+  return (
+    <>
+      <StatusBar style="light" />
+      <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>;
+    </>
+  );
 }
 
 const styles = StyleSheet.create({

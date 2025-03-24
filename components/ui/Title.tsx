@@ -1,5 +1,5 @@
 import Colors from "@/util/colors";
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, Platform } from "react-native";
 
 interface TitleProps {
   children: string;
@@ -16,9 +16,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.pinkColor,
     textAlign: "center",
-    borderWidth: 2,
-    borderColor: Colors.pinkColor,
+    // borderWidth: Platform.OS==='android' ? 2 : 0,
+    borderWidth: Platform.select({ ios: 0, android: 2 }),
     padding: 12,
+    borderColor: Colors.pinkColor,
     maxWidth: "80%",
     width: 300,
   },
